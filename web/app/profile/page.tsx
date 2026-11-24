@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Header } from "@/components/Header";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -34,13 +35,15 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8">
-      <div className="max-w-md mx-auto">
-        <Button variant="outline" onClick={() => router.push("/dashboard")} className="mb-6">
-          ← Назад
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] transition-colors duration-300">
+      <Header isAuthPage={false} />
+      
+      <div className="max-w-md mx-auto pt-10 px-4">
+        <Button variant="outline" onClick={() => router.push("/dashboard")} className="mb-6 rounded-lg">
+          ← Назад в профиль
         </Button>
         
-        <div className="bg-white p-8 rounded-2xl shadow-sm">
+        <div className="bg-card text-card-foreground p-8 rounded-2xl shadow-sm border border-border">
           <h1 className="text-2xl font-bold mb-6">Смена пароля</h1>
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
@@ -52,7 +55,7 @@ export default function ProfilePage() {
               <Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
             </div>
             {message && <p className={`text-sm ${message.includes("успешно") ? "text-green-600" : "text-red-500"}`}>{message}</p>}
-            <Button type="submit" className="w-full bg-blue-600">Сменить пароль</Button>
+            <Button type="submit" className="w-full rounded-lg">Сменить пароль</Button>
           </form>
         </div>
       </div>
