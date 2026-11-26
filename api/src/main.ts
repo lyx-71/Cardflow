@@ -9,8 +9,11 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:3001', 
-    credentials: true, 
+    origin: [
+      'http://localhost:3001', 
+      'https://cardflow-theta.vercel.app'
+    ], 
+    credentials: true,
   });
 
   app.useGlobalPipes(new ValidationPipe({
@@ -19,6 +22,10 @@ async function bootstrap() {
     transform: true,
   }));
 
-  await app.listen(3000);
+  const port = process.env.PORT || 3000;
+  
+  await app.listen(port);
+  
+  console.log(`Application is running on port: ${port}`);
 }
 bootstrap();

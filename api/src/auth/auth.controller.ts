@@ -21,11 +21,13 @@ export class AuthController {
   ) {
     const result = await this.authService.login(dto);
     
+    const isProduction = process.env.NODE_ENV === 'production';
+
     res.cookie('access_token', result.access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24,
+      secure: isProduction, 
+      sameSite: isProduction ? 'none' : 'lax', 
+      maxAge: 1000 * 60 * 60 * 24, 
     });
 
     return { user: result.user };
@@ -33,7 +35,12 @@ export class AuthController {
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: ExpressResponse) {
-    res.clearCookie('access_token');
+    const isProduction = process.env.NODE_ENV === 'production';
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+    });
     return { message: 'Выход выполнен' };
   }
 
