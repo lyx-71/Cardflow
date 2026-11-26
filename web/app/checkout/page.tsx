@@ -38,7 +38,7 @@ function CheckoutForm() {
 
   useEffect(() => {
     const fetchWallets = async () => {
-      const res = await fetch("http://localhost:3000/wallet", { credentials: "include" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}wallet`, { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
         setWallets(data);
@@ -58,7 +58,7 @@ function CheckoutForm() {
     setResult(null);
 
     try {
-      const res = await fetch("http://localhost:3000/cards/pay", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/pay`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

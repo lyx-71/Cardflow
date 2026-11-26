@@ -23,7 +23,7 @@ export default function NewCardPage() {
   useEffect(() => {
     const fetchWallets = async () => {
       try {
-        const res = await fetch("http://localhost:3000/wallet", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
           credentials: "include",
         });
         if (!res.ok) throw new Error("Ошибка загрузки кошельков");
@@ -51,7 +51,7 @@ export default function NewCardPage() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/cards", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -30,7 +30,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
 
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/cards/${card.id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}`, {
         credentials: "include",
       });
       if (res.ok) {
@@ -46,7 +46,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
 
   const handleToggleFreeze = async () => {
     try {
-      await fetch(`http://localhost:3000/cards/${card.id}/toggle-freeze`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}/toggle-freeze`, {
         method: "POST",
         credentials: "include",
       });
@@ -60,7 +60,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
     if (!confirm("Вы уверены, что хотите отвязать карту? Деньги останутся на кошельке.")) return;
     
     try {
-      await fetch(`http://localhost:3000/cards/${card.id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}`, {
         method: "DELETE",
         credentials: "include",
       });

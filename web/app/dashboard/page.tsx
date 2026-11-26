@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const authRes = await fetch("http://localhost:3000/auth/me", {
+      const authRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
         credentials: "include",
       });
       if (!authRes.ok) throw new Error("Не авторизован");
@@ -46,7 +46,7 @@ export default function DashboardPage() {
       const userData = await authRes.json();
       setUser(userData);
 
-      const cardsRes = await fetch("http://localhost:3000/cards", {
+      const cardsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
         credentials: "include",
       });
       if (cardsRes.ok) {
@@ -54,7 +54,7 @@ export default function DashboardPage() {
         setCards(cardsData);
       }
 
-      const walletsRes = await fetch("http://localhost:3000/wallet", {
+      const walletsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
         credentials: "include",
       });
       if (walletsRes.ok) {
@@ -62,7 +62,7 @@ export default function DashboardPage() {
         setWallets(walletsData);
       }
 
-      const txRes = await fetch("http://localhost:3000/transactions", {
+      const txRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
         credentials: "include",
       });
       if (txRes.ok) {
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                   className="px-8 py-6 rounded-xl text-lg"
                   onClick={async () => {
                     try {
-                      await fetch("http://localhost:3000/wallet", {
+                      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         credentials: "include",

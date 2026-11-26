@@ -19,7 +19,7 @@ export default function WalletsPage() {
   const [selectedWallet, setSelectedWallet] = useState<WalletData | null>(null);
 
   const fetchWallets = async () => {
-    const res = await fetch("http://localhost:3000/wallet", { credentials: "include" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet"`, { credentials: "include" });
     if (res.ok) setWallets(await res.json());
     setIsLoading(false);
   };
@@ -34,7 +34,7 @@ export default function WalletsPage() {
     if (isNaN(numAmount) || numAmount <= 0) return alert("Неверная сумма");
 
     try {
-      const res = await fetch(`http://localhost:3000/wallet/${selectedWallet.id}/${type}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet/${selectedWallet.id}/${type}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -56,7 +56,7 @@ export default function WalletsPage() {
   };
 
   const handleCreateWallet = async (currency: string) => {
-    const res = await fetch("http://localhost:3000/wallet", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

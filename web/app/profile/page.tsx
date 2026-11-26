@@ -17,7 +17,7 @@ export default function ProfilePage() {
     e.preventDefault();
     setMessage("");
 
-    const res = await fetch("http://localhost:3000/auth/change-password", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/change-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
