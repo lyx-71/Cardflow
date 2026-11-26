@@ -19,7 +19,7 @@ export default function WalletsPage() {
   const [selectedWallet, setSelectedWallet] = useState<WalletData | null>(null);
 
   const fetchWallets = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet"`, { credentials: "include" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { credentials: "include" });
     if (res.ok) setWallets(await res.json());
     setIsLoading(false);
   };
