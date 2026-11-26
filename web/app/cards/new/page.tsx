@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Header } from "@/components/Header";
+import { getAuthHeaders } from "@/lib/api";
 
 type WalletData = {
   id: string;
@@ -24,7 +25,7 @@ export default function NewCardPage() {
     const fetchWallets = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
-          credentials: "include",
+          headers: getAuthHeaders(), 
         });
         if (!res.ok) throw new Error("Ошибка загрузки кошельков");
 
@@ -53,8 +54,7 @@ export default function NewCardPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: getAuthHeaders(), 
         body: JSON.stringify({ walletId: selectedWallet }),
       });
 
@@ -70,7 +70,7 @@ export default function NewCardPage() {
       setIsSubmitting(false);
     }
   };
-
+  
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background text-foreground transition-colors duration-300">

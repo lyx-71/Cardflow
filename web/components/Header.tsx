@@ -12,7 +12,7 @@ export function Header({ isAuthPage = false }: HeaderProps) {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, { method: "POST", credentials: "include" });
+    localStorage.removeItem('token');
     router.push("/login");
   };
 

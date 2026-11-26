@@ -15,32 +15,12 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(
-    @Body() dto: LoginDto,
-    @Res({ passthrough: true }) res: ExpressResponse,
-  ) {
-    const result = await this.authService.login(dto);
-    
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    res.cookie('access_token', result.access_token, {
-      httpOnly: true,
-      secure: isProduction, 
-      sameSite: isProduction ? 'none' : 'lax', 
-      maxAge: 1000 * 60 * 60 * 24, 
-    });
-
-    return { user: result.user };
+  async login(@Body() dto: LoginDto) {
+    return this.authService.login(dto);
   }
 
   @Post('logout')
-  logout(@Res({ passthrough: true }) res: ExpressResponse) {
-    const isProduction = process.env.NODE_ENV === 'production';
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'none' : 'lax',
-    });
+  logout() {
     return { message: 'Выход выполнен' };
   }
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { getAuthHeaders } from "@/lib/api";
 
 export type CardData = {
   id: string;
@@ -31,7 +32,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
     setIsLoading(true);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}`, {
-        credentials: "include",
+        headers: getAuthHeaders(),
       });
       if (res.ok) {
         const data = await res.json();
@@ -48,7 +49,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}/toggle-freeze`, {
         method: "POST",
-        credentials: "include",
+        headers: getAuthHeaders(),
       });
       onUpdate();
     } catch (error) {
@@ -62,7 +63,7 @@ export function CardItem({ card, walletCurrency, onUpdate }: CardItemProps) {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/${card.id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: getAuthHeaders(),
       });
       onUpdate();
     } catch (error) {

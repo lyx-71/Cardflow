@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Header } from "@/components/Header";
+import { getAuthHeaders } from "@/lib/api";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -19,8 +20,7 @@ export default function ProfilePage() {
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/change-password`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: getAuthHeaders(), 
       body: JSON.stringify({ oldPassword, newPassword }),
     });
 

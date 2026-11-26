@@ -27,6 +27,10 @@ export default function LoginPage() {
       });
 
       if (!res.ok) throw new Error("Неверный email или пароль");
+      
+      const data = await res.json();
+      localStorage.setItem('token', data.access_token);
+      
       router.push("/dashboard");
     } catch (err: any) {
       setError(err.message);

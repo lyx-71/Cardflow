@@ -1,5 +1,6 @@
 "use client";
 
+import { getAuthHeaders } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -19,14 +20,12 @@ export default function WalletsPage() {
   const [selectedWallet, setSelectedWallet] = useState<WalletData | null>(null);
 
   const fetchWallets = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { credentials: "include" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { 
+      headers: getAuthHeaders() 
+    });
     if (res.ok) setWallets(await res.json());
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    fetchWallets();
-  }, []);
 
   const handleAction = async (type: "deposit" | "withdraw") => {
     if (!selectedWallet || !amount) return;
@@ -36,8 +35,7 @@ export default function WalletsPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet/${selectedWallet.id}/${type}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: getAuthHeaders(), 
         body: JSON.stringify({ amount: numAmount }),
       });
 
@@ -58,8 +56,7 @@ export default function WalletsPage() {
   const handleCreateWallet = async (currency: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: getAuthHeaders(), 
       body: JSON.stringify({ currency }),
     });
 

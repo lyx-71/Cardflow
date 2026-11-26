@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
+import { getAuthHeaders } from "@/lib/api";
 
 type WalletData = {
   id: string;
@@ -38,7 +39,9 @@ function CheckoutForm() {
 
   useEffect(() => {
     const fetchWallets = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { credentials: "include" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { 
+        headers: getAuthHeaders() 
+      });
       if (res.ok) {
         const data = await res.json();
         setWallets(data);
@@ -60,8 +63,7 @@ function CheckoutForm() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards/pay`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        headers: getAuthHeaders(), 
         body: JSON.stringify({
           walletId: selectedWallet.id,
           amount: serviceAmount,

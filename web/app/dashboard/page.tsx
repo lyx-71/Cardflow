@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CardItem, CardData } from "@/components/CardItem";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
+import { getAuthHeaders } from "@/lib/api";
 
 type WalletData = {
   id: string;
@@ -38,37 +39,23 @@ export default function DashboardPage() {
 
   const fetchDashboardData = async () => {
     try {
-      const authRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-        credentials: "include",
-      });
+      const headers = getAuthHeaders();
+
+      const authRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, { headers });
       if (!authRes.ok) throw new Error("Не авторизован");
 
       const userData = await authRes.json();
       setUser(userData);
 
-      const cardsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
-        credentials: "include",
-      });
-      if (cardsRes.ok) {
-        const cardsData = await cardsRes.json();
-        setCards(cardsData);
-      }
+      const cardsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, { headers });
+      if (cardsRes.ok) setCards(await cardsRes.json());
 
-      const walletsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
-        credentials: "include",
-      });
-      if (walletsRes.ok) {
-        const walletsData = await walletsRes.json();
-        setWallets(walletsData);
-      }
+      const walletsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { headers });
+      if (walletsRes.ok) setWallets(await walletsRes.json());
 
-      const txRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-        credentials: "include",
-      });
-      if (txRes.ok) {
-        const txData = await txRes.json();
-        setTransactions(txData);
-      }
+      const txRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, { headers });
+      if (txRes.ok) setTransactions(await txRes.json());
+      
     } catch (error) {
       router.push("/login");
     } finally {
@@ -141,8 +128,7 @@ export default function DashboardPage() {
                     try {
                       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include",
+                        headers: getAuthHeaders(),
                         body: JSON.stringify({ currency: "USD" }),
                       });
                       fetchDashboardData();
