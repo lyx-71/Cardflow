@@ -8,7 +8,6 @@ CardFlow это MVP веб-приложение для управления му
 - **Frontend:** Next.js (App Router), React, Tailwind CSS, shadcn/ui
 - **Backend:** NestJS, Prisma ORM, PostgreSQL
 - **Безопасность:** JWT (Bearer Token), Argon2id, AES-256-GCM
-- **Деплой:** Vercel (фронтенд), Railway (бэкенд и БД)
 
 ## Основной функционал
 - Регистрация и аутентификация (JWT)
