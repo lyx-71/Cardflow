@@ -20,12 +20,25 @@ export default function WalletsPage() {
   const [selectedWallet, setSelectedWallet] = useState<WalletData | null>(null);
 
   const fetchWallets = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { 
-      headers: getAuthHeaders() 
-    });
-    if (res.ok) setWallets(await res.json());
-    setIsLoading(false);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, { 
+        headers: getAuthHeaders() 
+      });
+      if (res.ok) {
+        setWallets(await res.json());
+      } else if (res.status === 401) {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Ошибка загрузки кошельков:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchWallets();
+  }, []);
 
   const handleAction = async (type: "deposit" | "withdraw") => {
     if (!selectedWallet || !amount) return;
@@ -54,14 +67,18 @@ export default function WalletsPage() {
   };
 
   const handleCreateWallet = async (currency: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
-      method: "POST",
-      headers: getAuthHeaders(), 
-      body: JSON.stringify({ currency }),
-    });
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/wallet`, {
+        method: "POST",
+        headers: getAuthHeaders(), 
+        body: JSON.stringify({ currency }),
+      });
 
-    if (res.ok) fetchWallets();
-    else alert("Ошибка создания кошелька");
+      if (res.ok) fetchWallets();
+      else alert("Ошибка создания кошелька");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (isLoading) {
